@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Reconnaissance vocale</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+    #start-btn { padding: 10px 20px; font-size: 18px; }
+    #text { margin-top: 20px; font-size: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Convertir la voix en texte</h1>
+  <button id="start-btn">🎙️ Démarrer</button>
+  <div id="text"></div>
+
+  <script>
+    const startBtn = document.getElementById('start-btn');
+    const textDiv = document.getElementById('text');
+
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = 'fr-FR';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    startBtn.onclick = () => {
+      recognition.start();
+      startBtn.textContent = "🎧 Écoute en cours...";
+    };
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      textDiv.textContent = `Texte détecté : "${transcript}"`;
+      startBtn.textContent = "🎙️ Démarrer";
+
+      // 👉 Tu peux envoyer ce texte à Adalo ici :
+      fetch("https://your-adalo-webhook-url.com", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ texte: transcript })
+      });
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Erreur:", event.error);
+      startBtn.textContent = "🎙️ Démarrer";
+    };
+  </script>
+</body>
+</html>
