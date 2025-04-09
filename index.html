@@ -34,10 +34,15 @@
       startBtn.textContent = "🎙️ Démarrer";
 
       // 👉 Tu peux envoyer ce texte à Adalo ici :
-      fetch("https://your-adalo-webhook-url.com", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ texte: transcript })
+      fetch("https://api.adalo.com/v0/apps/02980fa6-ac66-411b-9191-a70a539536ca/collections/t_4whaojbz6kx914221cot9qqnf", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer 5ue6qe5htn4zo1ppeeqz77ct3"
+  },
+  body: JSON.stringify({
+    contenu: transcript
+
       });
     };
 
@@ -45,6 +50,7 @@
       console.error("Erreur:", event.error);
       startBtn.textContent = "🎙️ Démarrer";
     };
+
   </script>
 </body>
 </html>
